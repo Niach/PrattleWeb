@@ -1,0 +1,178 @@
+.container {
+  position: sticky;
+}
+
+.card-hover:hover .timestamp {
+  display: none;
+}
+
+.open-in-new-button {
+  display: none;
+}
+
+.card-hover:hover .open-in-new-button {
+  display: block;
+}
+
+
+.post-card {
+  margin: 1em;
+
+}
+
+mat-card-header {
+  align-items: center;
+}
+
+.card-container {
+  width: 32%;
+}
+
+@media (max-width: 960px) {
+  .card-container {
+    width: 50%;
+  }
+}
+
+@media (max-width: 530px) {
+  .card-container {
+    width: 100%;
+  }
+}
+
+
+.post-image {
+  object-fit: contain;
+}
+
+.mat-card-image {
+  margin: 1em -1em 0 -1em;
+}
+
+.preview-image {
+  max-height: 128px;
+  object-fit: contain;
+}
+
+.posting-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.posting-input {
+  flex-grow: 1;
+}
+
+.posting-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.posting-bottom {
+}
+
+.like-icon {
+  color: red;
+}
+
+mat-spinner {
+  margin: 5em auto auto;
+
+}
+
+.no-posts-found {
+  text-align: center;
+  margin: 5em auto auto;
+}
+
+.comment-content-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+}
+
+.comment-top {
+  display: flex;
+}
+
+.comment-left {
+  flex: none;
+}
+
+.comment-middle {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-right {
+  flex: none;
+}
+
+.comment-profile-link {
+  display: flex;
+}
+
+.comment-profile-link a {
+  flex: none;
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+}
+
+.spacer {
+  flex: auto;
+}
+
+mat-card-actions {
+  margin-bottom: unset;
+  padding: 0;
+}
+
+mat-card {
+  padding-bottom: 0;
+}
+
+.timestamp {
+  font-size: smaller;
+  color: gray;
+}
+
+.expand-comment-container {
+  display: flex;
+  justify-content: center;
+}
+
+.comment-input-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.comment-input-container mat-form-field {
+  flex: auto;
+}
+
+.comment-input-container button {
+  flex: none;
+}
+
+.inner-post {
+  margin: 0 0 2em 2em;
+}
+
+.small-avatar {
+  height: 20px;
+  width: 20px;
+}
+
+.small-subtitle {
+  margin-bottom: 0;
+  margin-left: -10px;
+}
+
+.small-header {
+  margin-bottom: 8px;
+}

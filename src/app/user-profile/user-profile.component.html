@@ -1,0 +1,70 @@
+<mat-card>
+  <mat-card-content class="profile-container">
+
+    <div *ngIf="profile | async" class="profile-infos">
+      <button (filePick)="onFilePicked($event).then()"
+              [ngxFilePicker]="readmode.arrayBuffer"
+              [style.background-image]="'url(' + (profilePictureUrl | async) + ')'"
+              accept="image/*" class="profile-picture" mat-button>
+      </button>
+
+
+      <span *ngIf="!editingName" class="user-name">
+      {{(profile | async)?.userName}}
+        <button (click)="editingName = true;" mat-icon-button>
+        <mat-icon>edit</mat-icon>
+      </button>
+    </span>
+      <span *ngIf="editingName">
+      <mat-form-field>
+        <input #nameInput class="user-name-input" matInput placeholder="Username" type="text">
+      </mat-form-field>
+      <button (click)="editingName = false; changeName(nameInput.value).then()" mat-icon-button>
+        <mat-icon>done</mat-icon>
+      </button>
+    </span>
+
+      <span class="user-address"><small>{{(profile | async).getAddress()}}</small></span>
+
+      <span *ngIf="!editingDescription" class="user-description">
+      {{(profile | async).description || 'No Description'}}
+        <button (click)="editingDescription = true;" mat-icon-button>
+        <mat-icon>edit</mat-icon>
+      </button>
+    </span>
+      <span *ngIf="editingDescription">
+      <mat-form-field>
+        <input #descriptionInput class="user-description-input" matInput placeholder="Description" type="text">
+      </mat-form-field>
+      <button (click)="editingDescription = false; changeDescription(descriptionInput.value).then()" mat-icon-button>
+        <mat-icon>done</mat-icon>
+      </button>
+    </span>
+    </div>
+
+    <mat-divider></mat-divider>
+
+
+    <div class="profile-import-export">
+      <div class="profile-button-container">
+        <button (click)="downloadProfile().then()" color="primary" mat-fab>
+          <mat-icon>cloud_download</mat-icon>
+        </button>
+        <p>Download Profile</p>
+      </div>
+      <div class="profile-button-container">
+        <button (filePick)="importProfile($event).then()" [ngxFilePicker]="readmode.text" color="accent" mat-fab>
+          <mat-icon>cloud_upload</mat-icon>
+        </button>
+        <p>Import Profile</p>
+      </div>
+      <div class="profile-button-container">
+        <button (click)="resetProfile().then()" color="accent" mat-fab>
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <p>Reset Profile</p>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

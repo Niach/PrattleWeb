@@ -1,0 +1,100 @@
+<mat-spinner *ngIf="!loaded"></mat-spinner>
+<div *ngIf="loaded" class="post-container">
+  <mat-card class="post-card">
+    <div class="card-hover">
+      <mat-card-header>
+        <img mat-card-avatar src="https://ipfs.io/ipfs/{{postOwner?.picture}}" class="post-header">
+        <mat-card-title>
+          <a routerLink="/timeline/{{post.owner}}">{{postOwner?.userName}}</a>
+        </mat-card-title>
+        <span class="timestamp">{{post.getTimeStampString() | timeAgo}}</span>
+        <button mat-icon-button routerLink="/post/{{post.postAddress}}" class="open-in-new-button">
+          <mat-icon aria-label="Open">open_in_new</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>
+          {{post.text}}
+        </p>
+      </mat-card-content>
+      <img *ngIf="post.ipfsFile !== ''" mat-card-image class="post-image" src="{{post.ipfsContentUrl}}">
+
+      <mat-card-actions>
+        <button mat-icon-button (click)="clickComment().then()">
+          <mat-icon class="comment-icon" aria-label="Comment">comment</mat-icon>
+        </button>
+        <span>{{post.comments}}</span>
+        <button mat-icon-button (click)="like().then()">
+          <mat-icon class="like-icon" aria-label="Like">{{post.myRating == 0 ? 'favorite_border' : 'favorite'}}
+          </mat-icon>
+        </button>
+        <span>{{post.likes}}</span>
+        <button mat-icon-button (click)="share(post).then()">
+          <mat-icon class="share-icon" aria-label="Share">share</mat-icon>
+        </button>
+        <span>{{post.shares}}</span>
+        <div *ngIf="commentOpen">
+          <input #commentInput type="text">
+          <button (click)="postComment(commentInput.value).then(commentInput.value = ''); commentInput.value = ''">
+            Comment
+          </button>
+        </div>
+      </mat-card-actions>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div *ngFor="let comment of (post.postedComments | async); let i = index" class="comment">
+      <div class="comment-content-container card-hover">
+        <div class="comment-left">
+          <img mat-card-avatar src="https://ipfs.io/ipfs/{{comment.ownerProfile?.picture}}">
+        </div>
+
+        <div class="comment-middle">
+          <div class="comment-profile-link">
+            <a routerLink="/timeline/{{comment.owner}}">{{comment.ownerProfile?.userName}}</a>
+            <span class="spacer"></span>
+          </div>
+
+          <div class="comment-content">
+
+            {{comment.text}}
+
+          </div>
+          <img *ngIf="comment.ipfsFile !== ''" mat-card-image class="post-image" src="{{comment.ipfsContentUrl}}">
+          <mat-card-actions>
+            <button mat-icon-button (click)="clickComment(i).then()">
+              <mat-icon class="comment-icon" aria-label="Comment">comment</mat-icon>
+            </button>
+            <span>{{comment.comments}}</span>
+            <button mat-icon-button (click)="like(comment).then()">
+              <mat-icon class="like-icon" aria-label="Like">{{comment.myRating == 0 ? 'favorite_border' : 'favorite'}}
+              </mat-icon>
+            </button>
+            <span>{{comment.likes}}</span>
+            <button mat-icon-button (click)="share(comment).then()">
+              <mat-icon class="share-icon" aria-label="Share">share</mat-icon>
+            </button>
+            <span>{{comment.shares}}</span>
+            <div *ngIf="subCommentOpen[i]">
+              <input [(ngModel)]="commentInputValues[i]" type="text">
+              <button (click)="postComment(commentInputValues[i], comment).then(clearInput(i))">Comment</button>
+            </div>
+          </mat-card-actions>
+
+        </div>
+        <div class="comment-right">
+          <span class="timestamp">{{post.getTimeStampString() | timeAgo}}</span>
+          <button mat-icon-button routerLink="/post/{{comment.postAddress}}" class="open-in-new-button">
+            <mat-icon aria-label="Open">open_in_new</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+
+  </mat-card>
+
+
+</div>

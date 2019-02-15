@@ -1,0 +1,118 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 250px;
+
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100% !important;
+}
+
+.active-list-item {
+  color: #00c853 !important;
+}
+
+.profile-logged-out-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+
+mat-label {
+  align-self: center;
+}
+
+.register-container {
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.register-button {
+  align-self: flex-end;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+
+}
+
+.profile-info {
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 0.5em;
+}
+
+.profile-info-left {
+  flex: none;
+}
+
+.profile-info-left-register {
+  flex: none;
+}
+
+.register-pick-image-button {
+  width: 6em;
+  height: 6em;
+  border-radius: 3em;
+  margin: 0;
+  background-size: contain;
+}
+
+
+.profile-info-right {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-left: 0.5em;
+}
+
+.user-address {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: gray;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+mat-chip-list:focus {
+  outline: none;
+}

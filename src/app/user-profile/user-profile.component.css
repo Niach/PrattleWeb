@@ -1,0 +1,72 @@
+mat-card {
+
+  width: 80%;
+  margin: auto;
+  margin-top: 1em;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+mat-card .mat-divider-horizontal {
+  position: relative;
+}
+
+
+.profile-infos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.profile-import-export {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.profile-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em 1em 0;
+
+}
+
+.profile-button-container p {
+  font-weight: bold;
+}
+
+.profile-picture {
+  width: 10em;
+  height: 10em;
+  border-radius: 3em;
+  margin: 0;
+  background-size: contain;
+}
+
+
+.user-name {
+  width: 100%;
+}
+
+.user-name-input {
+
+}
+
+.user-address {
+  width: 100%;
+}
+
+.user-description {
+  width: 100%;
+}
+
+.user-description-input {
+
+}

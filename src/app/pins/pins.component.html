@@ -1,0 +1,16 @@
+<ngx-masonry #masonry [options]="{ horizontalOrder: true }">
+  <mat-card *ngFor="let pin of pins" class="pin-card" ngxMasonryItem>
+    <mat-card-header>
+    </mat-card-header>
+    <mat-card-content>
+      <img class="pin-image" mat-card-image src="{{pinContentUrls[pin.hash]}}">
+      <mat-card-actions align="end">
+        <button (click)="removePin(pin)" class="delete-button" color="warn" mat-stroked-button>
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+
+  </mat-card>
+
+</ngx-masonry>

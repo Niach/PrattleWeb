@@ -1,0 +1,113 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <mat-sidenav
+    #drawer
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)"
+    class="sidenav"
+    fixedInViewport="true">
+    <!--mat-menu #appMenu="matMenu">
+      <button mat-menu-item routerLink="/chats">Join</button>
+      <button mat-menu-item routerLink="/create">Create new</button>
+    </mat-menu-->
+    <mat-toolbar color="primary">
+      Prattle
+    </mat-toolbar>
+    <div *ngIf="userProfile" class="profile-container">
+      <div class="profile-info">
+        <div class="profile-info-left">
+          <img *ngIf="userProfile?.picture !== null" class="profile-picture"
+               src="{{userPictureUrl}}">
+        </div>
+        <div class="profile-info-right">
+          <span class="user-name">{{userProfile?.userName}}</span>
+          <span class="user-address"><small>{{userAddress}}</small></span>
+        </div>
+      </div>
+      <mat-chip-list [selectable]="false" class="info-container">
+        <mat-chip [disabled]="true" routerLink="/timeline/{{userAddress}}">Posts: {{userProfile?.numberOfPosts}}
+        </mat-chip>
+        <mat-chip [disabled]="true" routerLink="/following">Following: {{followingCount | async}}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <div *ngIf="!userProfile" class="profile-logged-out-container">
+      <div class="register-container">
+        <div class="profile-info-left-register">
+          <!--img class="profile-picture"
+               src="-->
+          <button (filePick)="onFilePicked($event).then()"
+                  [ngxFilePicker]="readmode.arrayBuffer"
+                  [style.background-image]="'url(' + pictureUrl + ')'"
+                  accept="image/*" class="register-pick-image-button" mat-button>
+          </button>
+        </div>
+        <div class="profile-info-right">
+          <mat-form-field>
+            <input #usernameInput autocomplete="off" class="user-name" matInput placeholder="Pick username" required
+                   type="text">
+          </mat-form-field>
+        </div>
+      </div>
+      <button (click)="clickRegister(usernameInput.value).then()" [disabled]="usernameInput.value.trim() === ''"
+              class="register-button" color="primary" mat-stroked-button>Register
+      </button>
+    </div>
+    <mat-nav-list>
+
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="/timeline" routerLinkActive="active-list-item">
+        <mat-icon matListIcon>home</mat-icon>
+        Timeline
+      </a>
+
+      <a mat-list-item routerLink="/discover" routerLinkActive="active-list-item">
+        <mat-icon matListIcon>explore</mat-icon>
+        Discover
+      </a>
+
+
+      <a mat-list-item routerLink="/pins" routerLinkActive="active-list-item">
+        <mat-icon matListIcon>perm_media</mat-icon>
+        Pinned Objects
+      </a>
+      <a mat-list-item routerLink="/profile" routerLinkActive="active-list-item">
+        <mat-icon matListIcon>account_circle</mat-icon>
+        Profile
+      </a>
+
+    </mat-nav-list>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="fixed-header" color="primary">
+      <button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        type="button">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>
+        <span *ngIf="post?.parent"><a routerLink="/post/{{post.parent.postAddress}}">Parent</a></span>
+        {{navTitle}}
+        <span *ngIf="routerUserProfile?.userName"> of {{routerUserProfile?.userName}}
+        </span>
+          <button (click)="clickFollow().then()" *ngIf="!isFollowing" color="secondary" mat-flat-button type="button">Follow</button>
+
+
+      </span>
+
+      <span class="spacer"></span>
+      <!--span><small>{{userAddress}}</small></span>
+      <img *ngIf="userProfile?.picture !== null" class="profile-picture"
+           src="https://ipfs.io/ipfs/{{userProfile?.picture}}">
+      <span>{{userProfile?.userName}}</span-->
+
+    </mat-toolbar>
+    <ng-content></ng-content>
+
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

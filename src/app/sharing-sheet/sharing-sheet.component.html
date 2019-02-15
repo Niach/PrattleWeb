@@ -1,0 +1,33 @@
+<mat-nav-list>
+  <mat-accordion>
+    <a (click)="clickShare($event); " href="" mat-list-item>
+      <mat-icon matListIcon>share</mat-icon>
+      <span mat-line>Share</span>
+    </a>
+
+    <!--a href="" mat-list-item (click)="clickShareWithComment($event)">
+      <mat-icon matListIcon>create</mat-icon>
+      <span mat-line>Share with comment</span>
+    </a-->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+
+        <mat-panel-title>
+          <mat-icon matListIcon>create</mat-icon>
+          <span>Add comment</span>
+        </mat-panel-title>
+
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="comment-input">
+        <input #commentInput autocomplete="off" matInput placeholder="Comment..">
+      </mat-form-field>
+
+      <mat-action-row>
+        <button (click)="clickShareWithComment(commentInput.value)" mat-button>Click me</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+</mat-nav-list>

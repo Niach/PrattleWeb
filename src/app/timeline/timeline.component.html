@@ -1,0 +1,212 @@
+<div class="container">
+  <mat-card class="posting-container">
+    <div class="posting-top">
+      <mat-form-field class="posting-input">
+        <textarea #textField autocomplete="off" matInput placeholder="What's up?"></textarea>
+      </mat-form-field>
+      <button (filePick)="onFilePicked($event).then()" [ngxFilePicker]="readmode.arrayBuffer" accept="image/*"
+              mat-icon-button type="button">
+        <mat-icon>add_photo_alternate</mat-icon>
+
+      </button>
+      <button (click)="postMessage(textField.value); textField.value=''" color="primary" mat-flat-button>Post</button>
+    </div>
+    <div class="posting-bottom">
+      <img class="preview-image" src="{{pickedFileUrl}}">
+    </div>
+  </mat-card>
+  <mat-spinner *ngIf="!noPostsFound && postSet.length < 1 "></mat-spinner>
+  <p *ngIf="postSet.length === 0 && noPostsFound" class="no-posts-found">No Posts found!</p>
+  <ngx-masonry #masonry [options]="{ horizontalOrder: true }">
+    <div *ngFor="let post of postSet; let postIndex = index" class="card-container" ngxMasonryItem>
+      <mat-card class="post-card">
+        <div>
+          <!-- parent -->
+          <div>
+            <mat-card-header *ngIf="post.parent" class="small-header">
+              <img class="small-avatar" mat-card-avatar src="{{profilePictures[post.owner]}}">
+              <mat-card-subtitle class="small-subtitle">{{post.isSharing ? 'shared' : 'replied to'}}: <a
+                [routerLink]="'/post/' + post.parentAddress">Post</a></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card *ngIf="post.parent" class="inner-post">
+              <mat-card-header>
+                <img class="post-header" mat-card-avatar
+                     src="{{profilePictures[post.parent.owner]}}">
+                <mat-card-title class="comment-profile-link">
+                  <a routerLink="/timeline/{{post.parent.owner}}">{{profiles[post.parent.owner]?.userName}}</a>
+                </mat-card-title>
+                <span class="timestamp">{{post.parent.getTimeStampString() | timeAgo}}</span>
+              </mat-card-header>
+              <img *ngIf="post.parent.ipfsFile !== ''" class="post-image" mat-card-image
+                   src="{{post.parent.ipfsContentUrl}}">
+              <mat-card-content *ngIf="post.parent.text">
+                <p>
+                  {{post.parent.text}}
+                </p>
+              </mat-card-content>
+
+              <mat-card-actions>
+                <button (click)="clickComment(post.parent.postAddress).then()" mat-icon-button>
+                  <mat-icon aria-label="Comment" class="comment-icon">comment</mat-icon>
+                </button>
+                <span>{{post.parent.comments}}</span>
+                <button (click)="like(post.parent).then()" mat-icon-button>
+                  <mat-icon aria-label="Like"
+                            class="like-icon">{{post.parent.myRating == 0 ? 'favorite_border' : 'favorite'}}
+                  </mat-icon>
+                </button>
+                <span>{{post.parent.likes}}</span>
+                <button (click)="share(post.parent).then()" mat-icon-button>
+                  <mat-icon aria-label="Share" class="share-icon">share</mat-icon>
+                </button>
+                <span>{{post.parent.shares}}</span>
+                <div *ngIf="commentOpen[post.parent.postAddress]" class="comment-input-container">
+                  <mat-form-field>
+                    <input [(ngModel)]="commentInputValues[post.parent.postAddress]" autocomplete="off" matInput
+                           placeholder="Comment.."
+                           type="text">
+                  </mat-form-field>
+                  <button
+                    (click)="postComment(commentInputValues[post.parent.postAddress], post.parent).then(clearInputs(post.parent.postAddress))"
+                    color="primary" mat-flat-button>Post
+                  </button>
+                </div>
+              </mat-card-actions>
+
+            </mat-card>
+            <mat-divider *ngIf="post.parent"></mat-divider>
+            <!-- child -->
+            <ng-container [ngTemplateOutlet]="postTemplate"></ng-container>
+          </div>
+
+          <ng-template #postTemplate>
+            <div class="card-hover">
+              <mat-card-header>
+                <img class="post-header" mat-card-avatar src="{{profilePictures[post.owner]}}">
+                <mat-card-title class="comment-profile-link">
+                  <a routerLink="/timeline/{{post.owner}}">{{profiles[post.owner]?.userName}}</a>
+                </mat-card-title>
+                <span class="timestamp">{{post.getTimeStampString() | timeAgo}}</span>
+                <button class="open-in-new-button" mat-icon-button routerLink="/post/{{post.postAddress}}">
+                  <mat-icon aria-label="Open">open_in_new</mat-icon>
+                </button>
+              </mat-card-header>
+              <img *ngIf="post.ipfsFile !== ''" class="post-image" mat-card-image src="{{post.ipfsContentUrl}}">
+              <mat-card-content *ngIf="post.text">
+
+                <p>
+                  {{post.text}}
+                </p>
+              </mat-card-content>
+            </div>
+
+          </ng-template>
+
+
+          <mat-card-actions>
+            <button (click)="clickComment(post.postAddress).then()" mat-icon-button>
+              <mat-icon aria-label="Comment" class="comment-icon">comment</mat-icon>
+            </button>
+            <span>{{post.comments}}</span>
+            <button (click)="like(post).then()" mat-icon-button>
+              <mat-icon aria-label="Like" class="like-icon">{{post.myRating == 0 ? 'favorite_border' : 'favorite'}}
+              </mat-icon>
+            </button>
+            <span>{{post.likes}}</span>
+            <button (click)="share(post).then()" mat-icon-button>
+              <mat-icon aria-label="Share" class="share-icon">share</mat-icon>
+            </button>
+            <span>{{post.shares}}</span>
+            <div *ngIf="commentOpen[post.postAddress]" class="comment-input-container">
+              <mat-form-field>
+                <input [(ngModel)]="commentInputValues[post.postAddress]" autocomplete="off" matInput
+                       placeholder="Comment.."
+                       type="text">
+              </mat-form-field>
+              <button
+                (click)="postComment(commentInputValues[post.postAddress], post).then(clearInputs(post.postAddress))"
+                color="primary" mat-flat-button>Post
+              </button>
+            </div>
+          </mat-card-actions>
+        </div>
+
+
+        <mat-divider></mat-divider>
+        <div *ngFor="let comment of (post.postedComments | async); let i = index;" class="comment">
+          <div *ngIf="i < 3 || loadAllComments[postIndex]" class="comment-content-container card-hover">
+            <div class="comment-top">
+              <div class="comment-left">
+                <img mat-card-avatar src="{{profilePictures[comment.owner]}}">
+              </div>
+
+              <div class="comment-middle">
+                <div class="comment-profile-link">
+                  <a routerLink="/timeline/{{comment.owner}}">{{comment.ownerProfile?.userName}}</a>
+                  <span class="spacer"></span>
+                </div>
+
+                <div class="comment-content">
+
+                  {{comment.text}}
+
+                </div>
+                <img *ngIf="comment.ipfsFile !== ''" class="post-image" mat-card-image src="{{comment.ipfsContentUrl}}">
+
+
+              </div>
+              <div class="comment-right">
+                <span class="timestamp">{{post.getTimeStampString() | timeAgo}}</span>
+                <button class="open-in-new-button" mat-icon-button routerLink="/post/{{comment.postAddress}}">
+                  <mat-icon aria-label="Open">open_in_new</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="comment-bottom">
+              <mat-card-actions>
+                <button (click)="clickComment(comment.postAddress).then()" mat-icon-button>
+                  <mat-icon aria-label="Comment" class="comment-icon">comment</mat-icon>
+                </button>
+                <span>{{comment.comments}}</span>
+                <button (click)="like(comment).then()" mat-icon-button>
+                  <mat-icon aria-label="Like"
+                            class="like-icon">{{comment.myRating == 0 ? 'favorite_border' : 'favorite'}}
+                  </mat-icon>
+                </button>
+                <span>{{comment.likes}}</span>
+                <button (click)="share(comment).then()" mat-icon-button>
+                  <mat-icon aria-label="Share" class="share-icon">share</mat-icon>
+                </button>
+                <span>{{comment.shares}}</span>
+                <div *ngIf="commentOpen[comment.postAddress]" class="comment-input-container">
+                  <mat-form-field>
+                    <input [(ngModel)]="commentInputValues[comment.postAddress]" autocomplete="off" matInput
+                           placeholder="Comment.."
+                           type="text">
+                  </mat-form-field>
+                  <button
+                    (click)="postComment(commentInputValues[comment.postAddress], comment).then(clearInputs(comment.postAddress))"
+                    color="primary" mat-flat-button>Post
+                  </button>
+                </div>
+              </mat-card-actions>
+            </div>
+
+          </div>
+
+
+        </div>
+        <div *ngIf="(post.postedComments | async).length > 3 && !loadAllComments[postIndex]"
+             class="expand-comment-container">
+          <button (click)="loadAllComments[postIndex] = true;" mat-icon-button>
+            <mat-icon>expand_more</mat-icon>
+          </button>
+
+        </div>
+
+
+      </mat-card>
+    </div>
+
+  </ngx-masonry>
+</div>

@@ -1,0 +1,18 @@
+.pin-card {
+  width: 10em;
+  margin: 1em;
+}
+
+.pin-image {
+  object-fit: contain;
+}
+
+.delete-button {
+  margin: 0;
+  padding: 0;
+}
+
+mat-card-actions {
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,79 @@
+.posting-container {
+  display: flex;
+  justify-content: center;
+}
+
+.post-card {
+  margin: 0.5em;
+}
+
+.comment {
+
+}
+
+.comment-content-container {
+  display: flex;
+  margin: 1em;
+}
+
+.comment-left {
+  flex: none;
+}
+
+.comment-middle {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-right {
+  flex: none;
+}
+
+.comment-profile-link {
+  display: flex;
+}
+
+.comment-profile-link a {
+  flex: none;
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+}
+
+.spacer {
+  flex: auto;
+}
+
+.comment-content {
+
+}
+
+mat-card-actions {
+  margin-bottom: unset;
+}
+
+.like-icon {
+  color: red;
+}
+
+mat-card-header {
+  align-items: center;
+
+}
+
+mat-card {
+  padding-bottom: 0;
+}
+
+.card-hover:hover .timestamp {
+  display: none;
+}
+
+.open-in-new-button {
+  display: none;
+}
+
+.card-hover:hover .open-in-new-button {
+  display: block;
+}
